@@ -35,13 +35,17 @@ This tool requires top-down .mp4 videos of zebrafish in petri dishes:
 The following is the first frame of a video in various parts of processing:
 
 1. The original image
+
 ![original frame](assets/original_frame.png)
 
 2. The image compressed to a smaller size
+
 ![compressed frame](assets/compressed_frame.png)
 
 3. The compressed image with binary coloring
+
 ![binary color frame](assets/binary_frame.png)
 
 4. The binary image with overlays of the tracking data
+
 ![binary frame w/ overlays](assets/binary_frame_with_overlays.png)

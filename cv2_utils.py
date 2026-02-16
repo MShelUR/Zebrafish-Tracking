@@ -24,9 +24,20 @@ def cast_video_to_frame_list(source):
 
     return frames
 
+def get_thumbnail(source):
+    cv_video = cv2.VideoCapture(source)
+    if not cv_video.isOpened():
+        raise FileNotFoundError(f"could not find file: {source}")
+
+    ret, frame = cv_video.read()
+
+    cv_video.release
+
+    return frame
+
 # display a frame w/ optional timer for next frame
 def show_frame(frame, size, timestep=None):
-    upscaled_frame = cv2.resize(frame,size, interpolation=cv2.INTER_NEAREST_EXACT)
+    upscaled_frame = cv2.resize(frame, size, interpolation=cv2.INTER_NEAREST_EXACT)
 
     cv2.imshow('Zebrafish Movement Tracking (q to exit)', upscaled_frame)
 

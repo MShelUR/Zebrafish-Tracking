@@ -21,7 +21,7 @@ import visualize_movement
 DEBUG = False
 
 
-VIDEO_SIZE = 64
+VIDEO_SIZE = 128
 COLOR_COMPRESSION_THRESHOLD = 50
 
 DISH_STEP = 10

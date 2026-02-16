@@ -30,3 +30,18 @@ This tool requires top-down .mp4 videos of zebrafish in petri dishes:
 2.a. The video preview at the end shows how the fish was tracked in one video: light blue is the dish, green is the travel path of the fish, and dark blue is the fish on that frame.
 2.b. Make sure that the video shown only tracks your zebrafish and not random noise in the dish. Alter the parameters in `movement_tracking.py` if necessary until only the places the fish goes are tracked as green.
 3. Generate statistics about the travel path of every processed video by running `python generate_statistics.py`. The results will be created in the `results` folder.
+
+## Image Samples
+The following is the first frame of a video in various parts of processing:
+
+1. The original image
+![original frame](assets/original_frame.png)
+
+2. The image compressed to a smaller size
+![compressed frame](assets/compressed_frame.png)
+
+3. The compressed image with binary coloring
+![binary color frame](assets/binary_frame.png)
+
+4. The binary image with overlays of the tracking data
+![binary frame w/ overlays](assets/binary_frame_with_overlays.png)

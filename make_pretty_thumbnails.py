@@ -8,7 +8,7 @@ from visualize_movement import visualize_data
 
 # this file generates the pictures used in the repository
 
-DISPLAY_WIDTH = 720
+DISPLAY_WIDTH = 150
 DISH_COLOR = [255,200,200]
 FISH_COLOR = [255,0,0]
 FISH_PATH_COLOR = [0,255,0]
@@ -28,9 +28,9 @@ def add_overlays_to_frame(frame, dish_overlay, fish_overlay, fish_union={}):
     return frame
 
 def save_image(path,image):
-    upscaled_image = cv2.resize(image, (DISPLAY_WIDTH, DISPLAY_WIDTH), interpolation=cv2.INTER_NEAREST_EXACT)
-    show_frame(upscaled_image,(DISPLAY_WIDTH,DISPLAY_WIDTH),0)
-    #cv2.imwrite(path, image)
+    resized_image = cv2.resize(image, (DISPLAY_WIDTH, DISPLAY_WIDTH), interpolation=cv2.INTER_NEAREST_EXACT)
+    #show_frame(upscaled_image,(DISPLAY_WIDTH,DISPLAY_WIDTH),0)
+    cv2.imwrite(path, resized_image)
 
 for _,_, files in os.walk("source_videos/"):
     for file in files:

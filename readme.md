@@ -7,7 +7,7 @@ This project calculates information about how much zebrafish move in petri dishe
 #### Python and dependencies
 This tool uses Python 3.13, and may have limited compatibility with other versions.
 
-To install the required packages that Python uses in this project, run: `pip intall -r requirements.txt`
+To install the required packages that Python uses in this project, run: `pip install -r requirements.txt`
 
 #### FFmpeg
 FFmpeg is a video processing utility that is used in this project for compression. It has a Python package that will be installed with the requirements file, but needs an executable to be installed separately and added to your `PATH` environment variable before the Python package will work. 
@@ -27,8 +27,8 @@ This tool requires top-down .mp4 videos of zebrafish in petri dishes:
 
 1. Copy the videos that you want to be analyzed to the `source_videos` folder.
 2. Run the movement tracking script `python movement_tracking.py`
-2.a. The video preview at the end shows how the fish was tracked in one video: light blue is the dish, green is the travel path of the fish, and dark blue is the fish on that frame.
-2.b. Make sure that the video shown only tracks your zebrafish and not random noise in the dish. Alter the parameters in `movement_tracking.py` if necessary until only the places the fish goes are tracked as green.
+    2.a. The video preview at the end shows how the fish was tracked in one video: light blue is the dish, green is the travel path of the fish, and dark blue is the fish on that frame.
+    2.b. Make sure that the video shown only tracks your zebrafish and not random noise in the dish. Alter the parameters in `movement_tracking.py` if necessary until only the places the fish goes are tracked as green.
 3. Generate statistics about the travel path of every processed video by running `python generate_statistics.py`. The results will be created in the `results` folder.
 
 ## Image Samples

@@ -32,28 +32,32 @@ def save_image(path,image):
     #show_frame(upscaled_image,(DISPLAY_WIDTH,DISPLAY_WIDTH),0)
     cv2.imwrite(path, resized_image)
 
-for _,_, files in os.walk("source_videos/"):
-    for file in files:
-        video_src = "source_videos/"+file
-        compressed_src = "data/videos/compressed_sources/"+file
-        binary_src = "data/videos/binary_sources/"+file
+def main():
+    for _,_, files in os.walk("source_videos/"):
+        for file in files:
+            video_src = "source_videos/"+file
+            compressed_src = "data/videos/compressed_sources/"+file
+            binary_src = "data/videos/binary_sources/"+file
 
-        original_frame = get_thumbnail(video_src)
-        compressed_frame = get_thumbnail(compressed_src)
-        binary_frame = get_thumbnail(binary_src)
+            original_frame = get_thumbnail(video_src)
+            compressed_frame = get_thumbnail(compressed_src)
+            binary_frame = get_thumbnail(binary_src)
 
-        dish, fish = load_data('data/'+file.removesuffix(".mp4"))
+            dish, fish = load_data('data/'+file.removesuffix(".mp4"))
 
-        fish_union = {}
-        for fish_frame in fish:
-            for fish_pixel in fish_frame:
-                fish_union[fish_pixel] = True
+            fish_union = {}
+            for fish_frame in fish:
+                for fish_pixel in fish_frame:
+                    fish_union[fish_pixel] = True
 
-        frame_with_data = add_overlays_to_frame(binary_frame.copy(), dish, fish, fish_union)
+            frame_with_data = add_overlays_to_frame(binary_frame.copy(), dish, fish, fish_union)
 
-        save_image('assets/original_frame.png', original_frame)
-        save_image('assets/compressed_frame.png', compressed_frame)
-        save_image('assets/binary_frame.png', binary_frame)
-        save_image('assets/binary_frame_with_overlays.png', frame_with_data)
+            save_image('assets/original_frame.png', original_frame)
+            save_image('assets/compressed_frame.png', compressed_frame)
+            save_image('assets/binary_frame.png', binary_frame)
+            save_image('assets/binary_frame_with_overlays.png', frame_with_data)
 
+            exit()
 
+if __name__ == "__main__":
+    main()

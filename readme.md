@@ -27,8 +27,8 @@ This tool requires top-down .mp4 videos of zebrafish in petri dishes:
 
 1. Copy the videos that you want to be analyzed to the `source_videos` folder.
 2. Run the movement tracking script `python movement_tracking.py`
-    2.a. The video preview at the end shows how the fish was tracked in one video: light blue is the dish, green is the travel path of the fish, and dark blue is the fish on that frame.
-    2.b. Make sure that the video shown only tracks your zebrafish and not random noise in the dish. Alter the parameters in `movement_tracking.py` if necessary until only the places the fish goes are tracked as green.
+    * 2.a. The video preview at the end shows how the fish was tracked in one video: light blue is the dish, green is the travel path of the fish, and dark blue is the fish on that frame.
+    * 2.b. Make sure that the video shown only tracks your zebrafish and not random noise in the dish. Alter the parameters in `movement_tracking.py` if necessary until only the places the fish goes are tracked as green.
 3. Generate statistics about the travel path of every processed video by running `python generate_statistics.py`. The results will be created in the `results` folder.
 
 ## Image Samples

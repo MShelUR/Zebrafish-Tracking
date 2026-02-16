@@ -9,6 +9,11 @@ This tool uses Python 3.13, and may have limited compatibility with other versio
 
 To install the required packages that Python uses in this project, run: `pip intall -r requirements.txt`
 
+#### FFmpeg
+FFmpeg is a video processing utility that is used in this project for compression. It has a Python package that will be installed with the requirements file, but needs an executable to be installed separately and added to your `PATH` environment variable before the Python package will work. 
+- FFmpeg releases can be found on the [official FFmpeg website](https://www.ffmpeg.org/download.html)
+- The exact process for adding FFmpeg to path varies by operating system.
+
 #### Videos
 
 This tool requires top-down .mp4 videos of zebrafish in petri dishes:

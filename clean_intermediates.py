@@ -5,7 +5,7 @@ import os
 
 
 def main():
-    for file in os.listdir("source_videos"):
+    for file in os.listdir("data/videos/binary_sources"):
         data_folder = "data/"+file.removesuffix('.mp4')
         compressed_video = "data/videos/compressed_sources/"+file
         binary_video = "data/videos/binary_sources/"+file

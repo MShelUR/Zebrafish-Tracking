@@ -1,9 +1,11 @@
 import contextlib
 import os
 
+import cv2
 import ffmpeg # NOTE: must install ffmpeg separately and add to path in windows
+from tqdm import tqdm
 
-from cv2_utils import get_video_dimensions, make_black_white_video
+from cv2_utils import *
 from file_io import verify_data_folders_exist
 
 
@@ -72,8 +74,52 @@ def preprocess_video(file, scale, threshold):
     # change video scale
     compress_video(source_file, compressed_file, scale)
 
+
     # make videos black and white
-    make_black_white_video(compressed_file, binary_file, scale, threshold)
+
+    # get grayscale first frame to then threshold
+    first_frame = get_grayscale_first_frame(compressed_file)
+    first_frame = cv2.resize(first_frame, (400,400))
+
+    # make cv2 window for displaying the preview
+    cv2.namedWindow("Threshold Preview")
+    # make window always on top
+    cv2.setWindowProperty("Threshold Preview", cv2.WND_PROP_TOPMOST, 1)
+
+    # repeat below until acceptable threshold has been applied and previewed.
+    while True:
+        # first choose the threshold
+        while True:
+            preview = make_black_white_frame(first_frame, threshold)
+            print(f"previewing threshold value: {threshold}")
+            cv2.imshow('Threshold Preview',preview)
+            cv2.waitKey(1) # required for enough time to load image, cv2 jank
+            response = int(input("enter new threshold 0-255 (or -1 to continue): "))
+            if response == -1:
+                break
+            threshold = response
+        
+        # with chosen threshold, watch preview
+        cv2.setWindowTitle("Threshold Preview", "Threshold Preview (q to cancel)")
+        canceled = False
+        grayscale_video = make_black_white_video(compressed_file, binary_file, scale, threshold)
+        # then preview the video with the threshold to make sure it's what the user wants
+        frames = cast_video_to_frame_list(grayscale_video)
+        for frame in tqdm(frames):
+            cv2.imshow('Threshold Preview',frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        
+        good = input("Is the threshold value acceptable? (y/n):\t")
+        if good == "y":
+            break
+        # else repeat
+        cv2.setWindowTitle("Threshold Preview (q to cancel)", "Threshold Preview")
+            
+
+    cv2.destroyAllWindows()
+
+    
 
     videos_processed += 1
 

@@ -44,6 +44,22 @@ def show_frame(frame, size, timestep=None):
     if cv2.waitKey(timestep) & 0xFF == ord('q'):
         return True
     
+def get_grayscale_first_frame(in_file):
+    cv_input = cv2.VideoCapture(in_file)
+    if not cv_input.isOpened():
+        raise FileNotFoundError(f"could not find file: {in_file}")
+    ret, first_frame = cv_input.read()
+    cv_input.release()
+    if not ret:
+        raise ValueError(f"first frame of '{in_file}' missing or corrupted.")
+    grayscale_first_frame = cv2.cvtColor(first_frame, cv2.COLOR_BGR2GRAY)
+    return grayscale_first_frame
+
+def make_black_white_frame(frame,threshold):
+    _, first_frame_binary_color = cv2.threshold(frame, threshold, 255, cv2.THRESH_BINARY)
+    return first_frame_binary_color
+
+
 def make_black_white_video(in_file, out_file, scale, threshold):
     cv_input = cv2.VideoCapture(in_file)
     if not cv_input.isOpened():
@@ -71,6 +87,7 @@ def make_black_white_video(in_file, out_file, scale, threshold):
 
     cv_input.release()
     cv_output.release()
+    return out_file
 
 def get_video_dimensions(source):
     cv_video = cv2.VideoCapture(source)

@@ -73,7 +73,7 @@ def main(show_all_videos=False):
     for _,_, files in os.walk("data/videos/binary_sources"):
         for file in files:
             video_src = "data/videos/binary_sources/"+file
-            dish_union, fish_pixels = get_saved_data_from_video(video_src)
+            dish_union, fish_pixels, video_scale = get_saved_data_from_video(video_src)
 
             visualize_data(video_src, dish_union, fish_pixels)
             if not show_all_videos:

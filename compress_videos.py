@@ -101,12 +101,13 @@ def preprocess_video(file, scale, threshold):
         
         # with chosen threshold, watch preview
         cv2.setWindowTitle("Threshold Preview", "Threshold Preview (q to cancel)")
-        canceled = False
         grayscale_video = make_black_white_video(compressed_file, binary_file, scale, threshold)
+
         # then preview the video with the threshold to make sure it's what the user wants
         frames = cast_video_to_frame_list(grayscale_video)
         for frame in tqdm(frames):
-            cv2.imshow('Threshold Preview',frame)
+            upscaled_frame = cv2.resize(frame, (400,400))
+            cv2.imshow('Threshold Preview',upscaled_frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         

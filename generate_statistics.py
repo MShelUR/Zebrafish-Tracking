@@ -27,6 +27,8 @@ def get_avg_pixel(pixels):
         pixel_sum[0] += pixel[0]
         pixel_sum[1] += pixel[1]
 
+    if len(pixels) == 0:
+        return None # fish is not visible! backoff to last known position.
     return (pixel_sum[0]/len(pixels),pixel_sum[1]/len(pixels))
 
 def magnitude(pixel_a,pixel_b):
@@ -83,7 +85,11 @@ def main(dish_size, new_scale):
             avg_positions = []
 
             for fish in fish_frames:
-                avg_positions.append(get_avg_pixel(fish))
+                new_avg = get_avg_pixel(fish)
+                if new_avg: # if fish is visible, add its location
+                    avg_positions.append(new_avg)
+                else: # if fish isn't visible, assume it was the last position it had
+                    avg_positions.append(avg_positions[-1])
 
             # scale up dish for higher quality lines
             dish_image = cv2.resize(dish_image, (new_scale, new_scale))

@@ -1,4 +1,5 @@
 data/*
+results/*
 source_videos/*
 hidden_files
 __pycache__

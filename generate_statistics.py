@@ -1,7 +1,10 @@
 import os
 
-import tkinter
+import colorsys
+import cv2
+import numpy
 
+from cv2_utils import save_frame
 from file_io import get_saved_data_from_video
 
 # this script generates information about how the zebrafish move
@@ -12,6 +15,9 @@ from file_io import get_saved_data_from_video
 
 # in mm
 DISH_SIZE = 100
+
+# width and height size in pixels for viewing the data
+VISUAL_SCALE = 400
 
 
 def get_avg_pixel(pixels):
@@ -42,34 +48,65 @@ def get_total_distance(avg_positions):
 
     return total_dist
 
-def main(dish_size):
-    root = tkinter.Tk()
-    canvas = tkinter.Canvas(root, width=720, height=540)
-    canvas.pack()
+def main(dish_size, new_scale):
+
+    cv2.namedWindow("Movement Visualization")
 
     for _,_, files in os.walk("data/videos/binary_sources"):
         for file in files:
             video_src = "data/videos/binary_sources/"+file
-            dish, fish_frames = get_saved_data_from_video(video_src)
+            result_path = "results/"+file.removesuffix(".mp4")+".png"
+            dish, fish_frames, original_scale = get_saved_data_from_video(video_src)
+            
+            # set up the dish image
+
+            # make entirely white picture
+            dish_image = numpy.ones((original_scale, original_scale, 3), dtype=numpy.uint8) # 3 channels for RGB
+
+            # add dish outline
+            for pixel in dish:
+                dish_image[pixel[0],pixel[1]] = [255,255,255]
+
+
+
+            # multiplier to recale pixel coordinates for the preview
+            scalar = new_scale / original_scale
+
+            # scale coordinates
+            scaled_fish_frames = []
+            for frame in fish_frames:
+                new_frame = {}
+                for coordinate in frame:
+                    new_frame[round(coordinate[0]*scalar),round(coordinate[1]*scalar)] = True
+                scaled_fish_frames.append(new_frame)
 
             avg_positions = []
 
             for fish in fish_frames:
                 avg_positions.append(get_avg_pixel(fish))
 
-            print(avg_positions)
+            # scale up dish for higher quality lines
+            dish_image = cv2.resize(dish_image, (new_scale, new_scale))
 
+            num_frames = len(avg_positions)
             last = avg_positions[0]
-            for pos in avg_positions[1:]:
-                canvas.create_line(last[0],last[1],pos[0],pos[1], fill="blue")
+            for i, pos in enumerate(avg_positions[1:]):
+
+                # get hex color for rainbow gradient
+                hue = i / num_frames
+                color = colorsys.hsv_to_rgb(hue, 1, 255)
+                cv2.line(dish_image,(int(last[0]*scalar), int(last[1]*scalar)),(int(pos[0]*scalar), int(pos[1]*scalar)),color,2)
                 last = pos
 
-            print(get_total_distance(avg_positions))
+            #print(get_total_distance(avg_positions))
+            
+            cv2.imshow('Movement Visualization',dish_image)
+            cv2.waitKey(1000)
 
-            root.mainloop()
+            save_frame(result_path, dish_image)
 
 
 
 
 if __name__ == "__main__":
-    main(DISH_SIZE)
+    main(DISH_SIZE, VISUAL_SCALE)

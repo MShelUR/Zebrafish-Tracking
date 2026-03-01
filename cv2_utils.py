@@ -100,3 +100,7 @@ def get_video_dimensions(source):
     cv_video.release()
 
     return width, height
+
+def save_frame(destination, frame):
+    if not cv2.imwrite(destination, frame):
+        raise ValueError(f"could not save image: {destination}")

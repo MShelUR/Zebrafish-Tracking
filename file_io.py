@@ -51,12 +51,14 @@ def load_data(input_folder):
     
     dish_file = input_folder+"/dish_pixels.json"
     fish_file = input_folder+"/fish_pixels.json"
+    scale_file = input_folder+"/scale.txt"
 
     if not os.path.isfile(dish_file) or not os.path.isfile(fish_file):
         raise FileNotFoundError(f"{input_folder} is missing data files")
     
     dish = {}
     fish = []
+    scale = 0
 
     with open(dish_file,"r") as dish_input:
         dish_list = json.loads(dish_input.read())
@@ -77,13 +79,16 @@ def load_data(input_folder):
                 fish_dict[value] = True
 
             fish.append(fish_dict)
+    
+    with open(scale_file,"r") as scale_input:
+        scale = int(scale_input.read())
 
-    return dish, fish
+    return dish, fish, scale
 
 def get_saved_data_from_video(video_src):
     data_path = "data/"+video_src.removeprefix('data/videos/binary_sources/').removesuffix('.mp4')
-    dish_union, fish_pixels = load_data(data_path)
-    return dish_union, fish_pixels
+    dish_union, fish_pixels, image_scale = load_data(data_path)
+    return dish_union, fish_pixels, image_scale
 
 # loads scale file, which is just an int
 def load_scale(input_folder):
